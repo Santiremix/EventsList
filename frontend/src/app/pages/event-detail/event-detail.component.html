@@ -82,7 +82,7 @@
           <div class="participant-row">
             <mat-checkbox [checked]="!!p.paid" (change)="togglePaid(p)" color="primary">
               <span class="participant-name" [class.paid-name]="p.paid">
-                <span class="name-text" [matTooltip]="p.name" matTooltipPosition="above">{{ p.name }}</span>
+                <span class="name-text">{{ p.name }}</span>
                 <span *ngIf="p.companion_list?.length" class="companions-tag"> + {{ p.companion_list.length }}</span>
               </span>
             </mat-checkbox>
