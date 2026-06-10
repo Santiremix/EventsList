@@ -14,7 +14,7 @@ export class EventDetailComponent implements OnInit {
   participants: Participant[] = [];
   loading = false;
   newName = '';
-  newCompanions = 0;
+  newCompanions: number | null = null;
   searchQuery = '';
   filterMode: 'todos' | 'pendientes' | 'pagados' = 'todos';
   private expanded = new Set<number>();
@@ -104,12 +104,12 @@ export class EventDetailComponent implements OnInit {
 
   addParticipant(): void {
     if (!this.newName.trim()) return;
-    this.api.addParticipant(this.eventId, this.newName.trim(), this.newCompanions).subscribe({
+    this.api.addParticipant(this.eventId, this.newName.trim(), this.newCompanions ?? 0).subscribe({
       next: (p) => {
         this.participants.push(p);
         this.participants.sort((a, b) => a.name.localeCompare(b.name));
         this.newName = '';
-        this.newCompanions = 0;
+        this.newCompanions = null;
         const n = p.companion_list?.length || 0;
         const label = n > 0 ? `${p.name} y ${n} acompañantes añadidos` : `${p.name} añadido`;
         this.snack.open(label, '', { duration: 1500 });

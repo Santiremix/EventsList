@@ -23,9 +23,6 @@
             [(ngModel)]="newName"
             placeholder="Nombre y apellido"
             (keyup.enter)="addParticipant()" />
-          <button mat-icon-button matSuffix (click)="addParticipant()" [disabled]="!newName.trim()" color="primary">
-            <mat-icon>person_add</mat-icon>
-          </button>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="companions-field">
@@ -33,6 +30,10 @@
           <mat-icon matPrefix>group</mat-icon>
           <input matInput type="number" min="0" [(ngModel)]="newCompanions" placeholder="0" />
         </mat-form-field>
+
+        <button mat-mini-fab color="primary" (click)="addParticipant()" [disabled]="!newName.trim()" class="add-btn">
+          <mat-icon>person_add</mat-icon>
+        </button>
       </div>
     </mat-card-content>
   </mat-card>

@@ -27,7 +27,12 @@
 .add-row {
   display: flex;
   gap: 12px;
-  align-items: flex-start;
+  align-items: center;
+}
+
+.add-btn {
+  flex-shrink: 0;
+  margin-bottom: 22px;
 }
 
 .name-field {
