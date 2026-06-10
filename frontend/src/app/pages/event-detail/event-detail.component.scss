@@ -25,23 +25,15 @@
 }
 
 .add-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 5rem 40px;
+  gap: 8px;
+  align-items: flex-end;
+  margin-bottom: 4px;
 }
 
 .add-btn {
-  flex-shrink: 0;
   margin-bottom: 22px;
-}
-
-.name-field {
-  flex: 1;
-}
-
-.companions-field {
-  width: 150px;
-  flex-shrink: 0;
 }
 
 .full-width {
