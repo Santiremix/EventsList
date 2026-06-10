@@ -115,14 +115,7 @@
   mat-checkbox {
     flex: 1;
     min-width: 0;
-
-    ::ng-deep .mat-checkbox-layout {
-      width: 100%;
-    }
-
-    ::ng-deep .mat-checkbox-label {
-      overflow: hidden;
-    }
+    overflow: hidden;
   }
 }
 

@@ -30,3 +30,23 @@ body {
   margin: 24px auto;
   padding: 0 16px;
 }
+
+// Truncar nombres largos en la lista de participantes
+.participant-row {
+  .mat-mdc-checkbox, mat-checkbox {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .mdc-form-field {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .mdc-label {
+    overflow: hidden;
+    display: block;
+    min-width: 0;
+  }
+}
