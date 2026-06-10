@@ -81,11 +81,9 @@
         <mat-list-item class="participant-item" [class.paid]="isFullyPaid(p)" [class.partial-paid]="isPartiallyPaid(p)">
           <div class="participant-row">
             <mat-checkbox [checked]="!!p.paid" (change)="togglePaid(p)" color="primary">
-              <span class="participant-name" [class.paid-name]="p.paid" [matTooltip]="p.name" matTooltipPosition="above">
-                {{ p.name }}
-                <span *ngIf="p.companion_list?.length" class="companions-tag">
-                  y {{ p.companion_list.length }}
-                </span>
+              <span class="participant-name" [class.paid-name]="p.paid">
+                <span class="name-text" [matTooltip]="p.name" matTooltipPosition="above">{{ p.name }}</span>
+                <span *ngIf="p.companion_list?.length" class="companions-tag"> y {{ p.companion_list.length }}</span>
               </span>
             </mat-checkbox>
             <div class="participant-actions">

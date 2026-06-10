@@ -122,16 +122,21 @@
 .participant-name {
   font-size: 16px;
   margin-left: 8px;
-  display: inline-block;
-  vertical-align: bottom;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
   max-width: calc(100vw - 200px);
+  vertical-align: bottom;
 
   &.paid-name {
     color: #558b2f;
   }
+}
+
+.name-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .participant-actions {
