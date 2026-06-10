@@ -51,12 +51,13 @@ function withCompanions(participant) {
 app.get('/api/events', (req, res) => {
   const events = db.prepare(`
     SELECT e.*,
-      COUNT(DISTINCT p.id) + COUNT(c.id) as total,
-      SUM(CASE WHEN p.paid = 1 THEN 1 ELSE 0 END) + SUM(CASE WHEN c.paid = 1 THEN 1 ELSE 0 END) as paid_count
+      (SELECT COUNT(*) FROM participants p WHERE p.event_id = e.id)
+      + (SELECT COUNT(*) FROM companions c JOIN participants p ON c.participant_id = p.id WHERE p.event_id = e.id)
+      AS total,
+      (SELECT COUNT(*) FROM participants p WHERE p.event_id = e.id AND p.paid = 1)
+      + (SELECT COUNT(*) FROM companions c JOIN participants p ON c.participant_id = p.id WHERE p.event_id = e.id AND c.paid = 1)
+      AS paid_count
     FROM events e
-    LEFT JOIN participants p ON p.event_id = e.id
-    LEFT JOIN companions c ON c.participant_id = p.id
-    GROUP BY e.id
     ORDER BY e.created_at DESC
   `).all();
   res.json(events);

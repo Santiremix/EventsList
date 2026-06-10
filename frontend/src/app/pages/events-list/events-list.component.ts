@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { ApiService, Event } from '../../services/api.service';
 
 @Component({
@@ -8,12 +10,13 @@ import { ApiService, Event } from '../../services/api.service';
   templateUrl: './events-list.component.html',
   styleUrls: ['./events-list.component.scss']
 })
-export class EventsListComponent implements OnInit {
+export class EventsListComponent implements OnInit, OnDestroy {
   events: Event[] = [];
   loading = false;
   newEventName = '';
   newEventDate = '';
   showForm = false;
+  private routerSub!: Subscription;
 
   constructor(
     private api: ApiService,
@@ -23,6 +26,13 @@ export class EventsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEvents();
+    this.routerSub = this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd && (e as NavigationEnd).urlAfterRedirects === '/')
+    ).subscribe(() => this.loadEvents());
+  }
+
+  ngOnDestroy(): void {
+    this.routerSub?.unsubscribe();
   }
 
   loadEvents(): void {
