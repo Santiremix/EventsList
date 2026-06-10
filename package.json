@@ -1,0 +1,12 @@
+{
+  "name": "event-lists",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "cd frontend && npm install && npx ng build --configuration production",
+    "start": "node backend/server.js",
+    "install:backend": "npm install --prefix backend"
+  }
+}

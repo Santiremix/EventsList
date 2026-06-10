@@ -1,0 +1,68 @@
+<div class="page-container">
+  <div class="header-row">
+    <h1>Mis Eventos</h1>
+    <button mat-raised-button color="primary" (click)="showForm = !showForm">
+      <mat-icon>add</mat-icon>
+      Nuevo evento
+    </button>
+  </div>
+
+  <mat-card *ngIf="showForm" class="form-card">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del evento</mat-label>
+        <input matInput [(ngModel)]="newEventName" placeholder="Ej: Excursión mayo" (keyup.enter)="createEvent()" />
+        <mat-icon matSuffix>event</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha (opcional)</mat-label>
+        <input matInput type="date" [(ngModel)]="newEventDate" />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="showForm = false">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="createEvent()" [disabled]="!newEventName.trim()">
+        Crear
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div *ngIf="loading" class="spinner-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && events.length === 0" class="empty-state">
+    <mat-icon>event_note</mat-icon>
+    <p>No hay eventos. ¡Crea el primero!</p>
+  </div>
+
+  <mat-card
+    *ngFor="let event of events"
+    class="event-card"
+    (click)="openEvent(event)">
+    <mat-card-content>
+      <div class="event-info">
+        <div class="event-main">
+          <h2>{{ event.name }}</h2>
+          <span *ngIf="event.date" class="event-date">
+            <mat-icon>calendar_today</mat-icon>
+            {{ event.date }}
+          </span>
+        </div>
+        <div class="event-stats">
+          <span class="stat paid">
+            <mat-icon>check_circle</mat-icon>
+            {{ event.paid_count || 0 }} pagados
+          </span>
+          <span class="stat total">
+            <mat-icon>people</mat-icon>
+            {{ event.total || 0 }} total
+          </span>
+          <button mat-icon-button color="warn" (click)="deleteEvent(event, $event)" matTooltip="Eliminar evento">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

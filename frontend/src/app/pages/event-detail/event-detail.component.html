@@ -1,0 +1,134 @@
+<div class="page-container">
+  <div class="header-row">
+    <button mat-icon-button (click)="goBack()" matTooltip="Volver">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="title-block">
+      <h1>{{ eventName || 'Evento' }}</h1>
+      <span class="counter">{{ paidCount }} / {{ totalPeople }} personas pagadas</span>
+    </div>
+    <button mat-icon-button (click)="loadParticipants()" matTooltip="Actualizar">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <mat-card class="add-card">
+    <mat-card-content>
+      <div class="add-row">
+        <mat-form-field appearance="outline" class="name-field">
+          <mat-label>Añadir participante</mat-label>
+          <input
+            matInput
+            [(ngModel)]="newName"
+            placeholder="Nombre y apellido"
+            (keyup.enter)="addParticipant()" />
+          <button mat-icon-button matSuffix (click)="addParticipant()" [disabled]="!newName.trim()" color="primary">
+            <mat-icon>person_add</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="companions-field">
+          <mat-label>Acompañantes</mat-label>
+          <mat-icon matPrefix>group</mat-icon>
+          <input matInput type="number" min="0" [(ngModel)]="newCompanions" placeholder="0" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-form-field appearance="outline" class="search-field full-width">
+    <mat-label>Buscar por nombre</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput [(ngModel)]="searchQuery" placeholder="Escribe un nombre..." />
+    <button *ngIf="searchQuery" mat-icon-button matSuffix (click)="searchQuery = ''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <div class="filter-row">
+    <mat-button-toggle-group [(ngModel)]="filterMode" aria-label="Filtro de pago">
+      <mat-button-toggle value="todos">Todos</mat-button-toggle>
+      <mat-button-toggle value="pendientes">
+        <mat-icon>schedule</mat-icon>
+        Pendientes
+      </mat-button-toggle>
+      <mat-button-toggle value="pagados">
+        <mat-icon>check_circle</mat-icon>
+        Pagados
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div *ngIf="loading" class="spinner-container">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && participants.length === 0" class="empty-state">
+    <mat-icon>group_add</mat-icon>
+    <p>Aún no hay participantes. Añade el primero arriba.</p>
+  </div>
+
+  <div *ngIf="!loading && participants.length > 0 && filtered.length === 0" class="empty-state">
+    <mat-icon>search_off</mat-icon>
+    <p>No hay resultados para "<strong>{{ searchQuery }}</strong>"</p>
+  </div>
+
+  <mat-card class="participants-card" *ngIf="!loading && filtered.length > 0">
+    <mat-list>
+      <ng-container *ngFor="let p of filtered; let last = last">
+
+        <mat-list-item class="participant-item" [class.paid]="isFullyPaid(p)" [class.partial-paid]="isPartiallyPaid(p)">
+          <div class="participant-row">
+            <mat-checkbox [checked]="!!p.paid" (change)="togglePaid(p)" color="primary">
+              <span class="participant-name" [class.paid-name]="p.paid">
+                {{ p.name }}
+                <span *ngIf="p.companion_list?.length" class="companions-tag">
+                  y {{ p.companion_list.length }}
+                </span>
+              </span>
+            </mat-checkbox>
+            <div class="participant-actions">
+              <span *ngIf="isFullyPaid(p)" class="paid-badge">
+                <mat-icon>check_circle</mat-icon>
+                Pagado
+              </span>
+              <span *ngIf="isPartiallyPaid(p)" class="paid-badge partial">
+                <mat-icon>schedule</mat-icon>
+                Esperando el resto
+              </span>
+              <button
+                *ngIf="p.companion_list?.length"
+                mat-icon-button
+                (click)="toggleExpand(p.id)"
+                [matTooltip]="isExpanded(p.id) ? 'Ocultar acompañantes' : 'Ver acompañantes'">
+                <mat-icon>{{ isExpanded(p.id) ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteParticipant(p)" matTooltip="Eliminar">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+
+        <div *ngIf="p.companion_list?.length && isExpanded(p.id)" class="companions-expand">
+          <div
+            *ngFor="let c of p.companion_list; let i = index"
+            class="companion-row"
+            [class.companion-paid]="c.paid">
+            <mat-checkbox [checked]="!!c.paid" (change)="toggleCompanionPaid(c, p)" color="primary">
+              <span class="companion-name" [class.paid-name]="c.paid">
+                Acompañante {{ i + 1 }}
+              </span>
+            </mat-checkbox>
+            <span *ngIf="c.paid" class="paid-badge small">
+              <mat-icon>check_circle</mat-icon>
+              Pagado
+            </span>
+          </div>
+        </div>
+
+        <mat-divider *ngIf="!last"></mat-divider>
+      </ng-container>
+    </mat-list>
+  </mat-card>
+</div>

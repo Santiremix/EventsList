@@ -1,0 +1,18 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Base de datos (se crea sola en producción)
+backend/events.db
+
+# Build de Angular
+frontend/dist/
+frontend/.angular/
+
+# Claude Code
+.claude/
+
+# Sistema
+.DS_Store
+Thumbs.db
