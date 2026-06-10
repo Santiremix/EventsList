@@ -91,11 +91,11 @@
             <div class="participant-actions">
               <span *ngIf="isFullyPaid(p)" class="paid-badge">
                 <mat-icon>check_circle</mat-icon>
-                Pagado
+                <!-- Pagado -->
               </span>
               <span *ngIf="isPartiallyPaid(p)" class="paid-badge partial">
                 <mat-icon>schedule</mat-icon>
-                Esperando el resto
+                <!-- Esperando el resto -->
               </span>
               <button
                 *ngIf="p.companion_list?.length"
