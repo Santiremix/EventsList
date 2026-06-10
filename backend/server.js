@@ -9,7 +9,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-const db = new Database(path.join(__dirname, 'events.db'));
+const dbPath = process.env.DB_PATH || path.join(__dirname, 'events.db');
+const db = new Database(dbPath);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS events (
