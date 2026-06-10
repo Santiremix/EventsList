@@ -7,6 +7,10 @@
       <h1>{{ eventName || 'Evento' }}</h1>
       <span class="counter">{{ paidCount }} / {{ totalPeople }} personas pagadas</span>
     </div>
+    <button mat-raised-button color="primary" (click)="loadParticipants()">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
   </div>
 
   <mat-card class="add-card">
