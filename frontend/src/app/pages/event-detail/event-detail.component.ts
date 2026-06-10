@@ -63,8 +63,9 @@ export class EventDetailComponent implements OnInit {
   }
 
   isPartiallyPaid(p: Participant): boolean {
-    if (!p.paid) return false;
-    return (p.companion_list || []).some(c => !c.paid);
+    if (this.isFullyPaid(p)) return false;
+    if (p.paid) return true;
+    return (p.companion_list || []).some(c => c.paid);
   }
 
   isExpanded(id: number): boolean {
